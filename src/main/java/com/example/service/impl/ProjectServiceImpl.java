@@ -1,0 +1,54 @@
+package com.example.service.impl;
+
+import com.example.exception.ResourceNotFoundException;
+import com.example.model.Project;
+import com.example.repository.ProjectReponsitory;
+import com.example.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class ProjectServiceImpl implements ProjectService {
+    @Autowired
+    private ProjectReponsitory projectReponsitory;
+    @Override
+    public List<Project> getAllProject() {
+        return projectReponsitory.findAll();
+    }
+
+    @Override
+    public Project saveProject(Project project) {
+        return projectReponsitory.save(project);
+    }
+
+    @Override
+    public ResponseEntity<Project> upateProject(String id, Project project) {
+        Project project1 = projectReponsitory.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Not found any project"));
+        project1.setName(project.getName());
+        final Project updateProject = projectReponsitory.save(project1);
+        return ResponseEntity.ok().body(updateProject);
+    }
+
+    @Override
+    public ResponseEntity<Project> getProjectById(String id) {
+        Project project = projectReponsitory.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Not found any project"));
+        return ResponseEntity.ok().body(project);
+    }
+
+    @Override
+    public Map<String, Boolean> deleteProject(String id) {
+        Project project = projectReponsitory.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Not found any project"));
+        projectReponsitory.delete(project);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("delete project ok", Boolean.TRUE);
+        return response;
+    }
+}
