@@ -1,68 +1,42 @@
 package com.example.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "company")
+@Table(name = "company", schema = "public")
+@Data
+//@EqualsAndHashCode(exclude="domain")
 public class Company {
-    private String id;
-    private String name;
-    private String url;
-    private String phone;
-    private String domainID;
-
-    public Company() {
-
-    }
-    public Company(String id, String name, String url, String phone, String domainID) {
-        this.id = id;
-        this.name = name;
-        this.url = url;
-        this.phone = phone;
-        this.domainID = domainID;
-    }
     @Id
     @Column(name = "company_id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String id;
     @Column(name = "company_name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
     @Column(name = "url")
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    private String url;
     @Column(name = "phone")
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    private String phone;
     @Column(name = "domain_id")
-    public String getDomainID() {
-        return domainID;
-    }
+    private String domainID;
 
-    public void setDomainID(String domainID) {
-        this.domainID = domainID;
-    }
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "company", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("company")
+//    @Fetch(value=FetchMode.SELECT)
+    private Set<Department> departments;
+
+    @ManyToOne
+    @JoinColumn(name = "domain_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("companies")
+    @EqualsAndHashCode.Exclude private Domain domain;
 }

@@ -1,58 +1,32 @@
 package com.example.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "project")
-public class Project {
-    private String id;
-    private String name;
-    private String text;
-    private String description;
-
-    public Project() {
-
-    }
-    public Project(String id, String name, String text, String description) {
-        this.id = id;
-        this.name = name;
-        this.text = text;
-        this.description = description;
-    }
+public class Project  {
     @Id
     @Column(name = "project_id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String id;
     @Column(name = "project_name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
     @Column(name = "text")
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+    private String text;
     @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
+    private String description;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, mappedBy = "projects")
+    @JsonIgnoreProperties("projects")
+    @EqualsAndHashCode.Exclude private Set<Employee> employees;
 }

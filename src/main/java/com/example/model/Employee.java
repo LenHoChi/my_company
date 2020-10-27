@@ -1,79 +1,46 @@
 package com.example.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "employee")
-public class Employee {
-    private String id;
-    private String name;
-    private Date birthday;
-    private String gender;
-    private String phone;
-    private String department_id;
-
-    public Employee() {
-
-    }
-    public Employee(String id, String name, Date birthday, String gender, String phone, String department_id) {
-        this.id = id;
-        this.name = name;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.phone = phone;
-        this.department_id = department_id;
-    }
+//@EqualsAndHashCode(exclude="department")
+public class Employee  {
     @Id
     @Column(name = "employee_id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String id;
     @Column(name = "employee_name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
     @Column(name = "birthday")
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+    private Date birthday;
     @Column(name = "gender")
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+    private String gender;
     @Column(name = "phone")
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    private String phone;
     @Column(name = "department_id")
-    public String getDepartment_id() {
-        return department_id;
-    }
+    private String department_id;
 
-    public void setDepartment_id(String department_id) {
-        this.department_id = department_id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "department_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("employees")
+    @EqualsAndHashCode.Exclude private Department department;
+
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade= CascadeType.ALL)
+    @JoinTable(name = "employee_projects",
+            joinColumns = {@JoinColumn(name = "employee_id")},
+            inverseJoinColumns = {@JoinColumn(name = "project_id")})
+    @JsonIgnoreProperties("employees")
+    @EqualsAndHashCode.Exclude private Set<Project> projects;
 }

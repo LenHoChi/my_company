@@ -1,68 +1,38 @@
 package com.example.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-@Table(name = "department")
-public class Department {
-    private String id;
-    private String name;
-    private String description;
-    private String email;
-    private String company_Id;
-
-    public Department() {
-
-    }
-    public Department(String id, String name, String description, String email, String company_Id) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.email = email;
-        this.company_Id = company_Id;
-    }
+@Table(name = "department", schema = "public")
+@Data
+//@EqualsAndHashCode(exclude="company")
+//@EqualsAndHashCode(of = "abc")
+public class Department  {
     @Id
     @Column(name = "department_id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String id;
     @Column(name = "department_name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
     @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    private String description;
     @Column(name = "email")
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    private String email;
     @Column(name = "company_id")
-    public String getCompany_Id() {
-        return company_Id;
-    }
+    private String companyId;
+    @ManyToOne
+    @JoinColumn(name = "company_id", insertable = false, updatable = false)
+    @JsonIgnoreProperties("departments")
+    @EqualsAndHashCode.Exclude private Company company;
 
-    public void setCompany_Id(String company_Id) {
-        this.company_Id = company_Id;
-    }
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("department")
+    private Set<Employee> employees;
 }
