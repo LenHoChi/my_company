@@ -9,7 +9,7 @@ import java.util.Map;
 public interface DepartmentService {
     Department saveDepartment(Department department);
     List<Department> getAllDepartment();
-    ResponseEntity<Department> getDepartmentById(String id);
-    ResponseEntity<Department> updateDepartment(String id, Department department);
+    Department getDepartmentById(String id);
+    Department updateDepartment(String id, Department department);
     Map<String, Boolean> deleteDepartment(String id);
 }

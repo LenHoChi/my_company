@@ -27,19 +27,21 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
-    public ResponseEntity<Domain> getDomainById(String id) {
+    public Domain getDomainById(String id) {
         Domain domain = domainReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any domain"));
-        return ResponseEntity.ok().body(domain);
+        //return ResponseEntity.ok().body(domain);
+        return domain;
     }
 
     @Override
-    public ResponseEntity<Domain> updateDomain(String id, Domain domain) {
+    public Domain updateDomain(String id, Domain domain) {
         Domain domain1 = domainReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any domain"));
         domain1.setName(domain.getName());
         final Domain updateDomain = domainReponsitory.save(domain1);
-        return ResponseEntity.ok().body(updateDomain);
+        //return ResponseEntity.ok().body(updateDomain);
+        return updateDomain;
     }
 
     @Override

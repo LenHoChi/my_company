@@ -1,7 +1,9 @@
 package com.example.controller;
 
+import com.example.dto.EmployeeDTO;
 import com.example.model.Employee;
 import com.example.service.EmployeeService;
+import com.example.utils.EmployeeConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +17,22 @@ import java.util.Map;
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
+    EmployeeConvert employeeConvert=new EmployeeConvert();
     @GetMapping("/employee/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable(name = "id") String id){
-        return employeeService.getEmployeeById(id);
+    public EmployeeDTO getEmployeeById(@PathVariable(name = "id") String id){
+        return employeeConvert.modelToDTo(employeeService.getEmployeeById(id));
     }
     @GetMapping("/employee")
-    public List<Employee> getAllEmployee(){
-        return employeeService.getAllEmployee();
+    public List<EmployeeDTO> getAllEmployee(){
+        return employeeConvert.listModelToListDTO(employeeService.getAllEmployee());
     }
     @PostMapping("/employee")
-    public Employee createEmployee(@Valid @RequestBody Employee employee){
-        return employeeService.saveEmployee(employee);
+    public EmployeeDTO createEmployee(@Valid @RequestBody Employee employee){
+        return employeeConvert.modelToDTo(employeeService.saveEmployee(employee));
     }
     @PutMapping("/employee/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable(name = "id") String id, @Valid @RequestBody Employee employee){
-        return employeeService.updateEmployee(id, employee);
+    public EmployeeDTO updateEmployee(@PathVariable(name = "id") String id, @Valid @RequestBody Employee employee){
+        return employeeConvert.modelToDTo(employeeService.updateEmployee(id, employee));
     }
     @DeleteMapping("/employee/{id}")
     public Map<String, Boolean> deleteEmployee(@PathVariable(name = "id") String id){

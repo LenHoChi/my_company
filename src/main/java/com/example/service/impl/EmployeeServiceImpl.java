@@ -27,19 +27,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseEntity<Employee> getEmployeeById(String id) {
+    public Employee getEmployeeById(String id) {
         Employee employee = employeeReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any employee"));
-        return ResponseEntity.ok().body(employee);
+        //return ResponseEntity.ok().body(employee);
+        return employee;
     }
 
     @Override
-    public ResponseEntity<Employee> updateEmployee(String id, Employee employee) {
+    public Employee updateEmployee(String id, Employee employee) {
         Employee employee1 = employeeReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any employee"));
         employee1.setName(employee.getName());
         final Employee updateEmployee = employeeReponsitory.save(employee1);
-        return ResponseEntity.ok().body(updateEmployee);
+        //return ResponseEntity.ok().body(updateEmployee);
+        return updateEmployee;
     }
 
     @Override

@@ -27,19 +27,21 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ResponseEntity<Project> upateProject(String id, Project project) {
+    public Project upateProject(String id, Project project) {
         Project project1 = projectReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any project"));
         project1.setName(project.getName());
         final Project updateProject = projectReponsitory.save(project1);
-        return ResponseEntity.ok().body(updateProject);
+        //return ResponseEntity.ok().body(updateProject);
+        return updateProject;
     }
 
     @Override
-    public ResponseEntity<Project> getProjectById(String id) {
+    public Project getProjectById(String id) {
         Project project = projectReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any project"));
-        return ResponseEntity.ok().body(project);
+        //return ResponseEntity.ok().body(project);
+        return project;
     }
 
     @Override

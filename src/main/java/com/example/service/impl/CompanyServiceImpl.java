@@ -27,17 +27,19 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<Company> getCompanyById(String id) {
+    public Company getCompanyById(String id) {
         Company company= companyRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Not found any company"));
-        return ResponseEntity.ok().body(company);
+        //return ResponseEntity.ok().body(company);
+        return company;
     }
 
     @Override
-    public ResponseEntity<Company> updateCompany(String id, Company company) {
+    public Company updateCompany(String id, Company company) {
         Company company1 = companyRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Not Found any company"));
         company1.setName(company.getName());
         final Company updateComany = companyRepository.save(company1);
-        return ResponseEntity.ok().body(updateComany);
+        //return ResponseEntity.ok().body(updateComany);
+        return updateComany;
     }
 
     @Override

@@ -28,17 +28,19 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public ResponseEntity<Department> getDepartmentById(String id) {
+    public Department getDepartmentById(String id) {
         Department department = departmentReponsitory.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not found any department"));
-        return ResponseEntity.ok().body(department);
+        //return ResponseEntity.ok().body(department);
+        return department;
     }
 
     @Override
-    public ResponseEntity<Department> updateDepartment(String id, Department department) {
+    public Department updateDepartment(String id, Department department) {
         Department department1 = departmentReponsitory.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not found any department"));
         department1.setName(department.getName());
         final Department updateDepartment = departmentReponsitory.save(department1);
-        return ResponseEntity.ok().body(updateDepartment);
+        //return ResponseEntity.ok().body(updateDepartment);
+        return updateDepartment;
     }
 
     @Override
