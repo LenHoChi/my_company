@@ -10,6 +10,7 @@ import java.util.Map;
 public interface CompanyService {
     Company saveCompany(Company company);
     List<Company> getAllCompany();
+    Page<Company> getAllCompanyByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
     Page<Company> getAllCompanyByNameDecending(Integer pageNo, Integer pageSize, String sortBy);
     Company getCompanyById(String id);
     Company updateCompany(String id, Company company);

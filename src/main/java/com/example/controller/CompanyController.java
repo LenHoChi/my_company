@@ -31,7 +31,7 @@ public class CompanyController {
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
-        return companyConvert.pageModelToPageDTO(companyService.getAllCompanyByNameDecending(pageNo,pageSize,sortBy));
+        return companyConvert.pageModelToPageDTO(companyService.getAllCompanyByIdAscending(pageNo,pageSize,sortBy));
     }
     @GetMapping("/len2/company")
     public ResponseEntity<Map<String, Object>> getAllCompanySortByNameDescending(
