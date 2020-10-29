@@ -32,12 +32,12 @@ public class DepartmentController {
         return departmentConvert.modelToDTO(departmentService.getDepartmentById(id));
     }
     @GetMapping("/len2/department")
-    public ResponseEntity<Map<String, Object>> getAllDepartment3(
+    public ResponseEntity<Map<String, Object>> getAllDepartmentByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
         Map<String, Object> body = new HashMap<>();
-        Page<DepartmentDTO> departmentPage= departmentConvert.pageModelToPageDTO(departmentService.getAllDepartmnet2(pageNo,pageSize,sortBy));
+        Page<DepartmentDTO> departmentPage= departmentConvert.pageModelToPageDTO(departmentService.getAllDepartmnetByIdAscending(pageNo,pageSize,sortBy));
         body.put("body", departmentPage.getContent());
         body.put("currentPage", departmentPage.getNumber());
         body.put("totalItems", departmentPage.getTotalElements());

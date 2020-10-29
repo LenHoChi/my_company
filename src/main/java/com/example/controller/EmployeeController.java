@@ -31,12 +31,12 @@ public class EmployeeController {
         return employeeConvert.listModelToListDTO(employeeService.getAllEmployee());
     }
     @GetMapping("/len2/employee")
-    public ResponseEntity<Map<String, Object>> getAllEmployee3(
+    public ResponseEntity<Map<String, Object>> getAllEmployeeByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
         Map<String, Object> body = new HashMap<>();
-        Page<EmployeeDTO> employeePage= employeeConvert.pageModelToPageDTO(employeeService.getAllEmployee2(pageNo,pageSize,sortBy));
+        Page<EmployeeDTO> employeePage= employeeConvert.pageModelToPageDTO(employeeService.getAllEmployeeByIdAscending(pageNo,pageSize,sortBy));
         body.put("body", employeePage.getContent());
         body.put("currentPage", employeePage.getNumber());
         body.put("totalItems", employeePage.getTotalElements());

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface ProjectService {
     List<Project> getAllProject();
-    Page<Project> getAllProject2(Integer pageNo, Integer pageSize, String sortBy);
+    Page<Project> getAllProjectByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
     Project saveProject(Project project);
     Project upateProject(String id, Project project);
     Project getProjectById(String id);

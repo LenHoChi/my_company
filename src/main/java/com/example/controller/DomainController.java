@@ -31,12 +31,12 @@ public class DomainController {
         return domainConvert.modelToDTO(domainService.getDomainById(id));
     }
     @GetMapping("/len2/domain")
-    public ResponseEntity<Map<String, Object>> getAllDomain3(
+    public ResponseEntity<Map<String, Object>> getAllDomainByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
         Map<String, Object> body = new HashMap<>();
-        Page<DomainDTO> domainPage= domainConvert.pageModelToPageDTO(domainService.getAllDomain2(pageNo,pageSize,sortBy));
+        Page<DomainDTO> domainPage= domainConvert.pageModelToPageDTO(domainService.getAllDomainByIdAscending(pageNo,pageSize,sortBy));
         body.put("body", domainPage.getContent());
         body.put("currentPage", domainPage.getNumber());
         body.put("totalItems", domainPage.getTotalElements());

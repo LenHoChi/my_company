@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Page<Employee> getAllEmployee2(Integer pageNo, Integer pageSize, String sortBy) {
+    public Page<Employee> getAllEmployeeByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Employee> pagedResult = employeeReponsitory.findAll(paging);
         return  pagedResult;

@@ -11,7 +11,7 @@ import java.util.Map;
 public interface EmployeeService {
     Employee saveEmployee(Employee employee);
     List<Employee> getAllEmployee();
-    Page<Employee> getAllEmployee2(Integer pageNo, Integer pageSize, String sortBy);
+    Page<Employee> getAllEmployeeByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
     Employee getEmployeeById(String id);
     Employee updateEmployee(String id, Employee employee);
     Map<String, Boolean> deleteEmployee(String id);

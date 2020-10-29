@@ -27,19 +27,19 @@ public class CompanyController {
         return companyConvert.listModelToListDTO(companyService.getAllCompany());
     }
     @GetMapping("/len/company")
-    public Page<CompanyDTO> getAllCompany2(
+    public Page<CompanyDTO> getAllCompanySortByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
-        return companyConvert.pageModelToPageDTO(companyService.getAllCompany2(pageNo,pageSize,sortBy));
+        return companyConvert.pageModelToPageDTO(companyService.getAllCompanyByNameDecending(pageNo,pageSize,sortBy));
     }
     @GetMapping("/len2/company")
-    public ResponseEntity<Map<String, Object>> getAllCompany3(
+    public ResponseEntity<Map<String, Object>> getAllCompanySortByNameDescending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
         Map<String, Object> body = new HashMap<>();
-        Page<CompanyDTO> companyPage= companyConvert.pageModelToPageDTO(companyService.getAllCompany2(pageNo,pageSize,sortBy));
+        Page<CompanyDTO> companyPage= companyConvert.pageModelToPageDTO(companyService.getAllCompanyByNameDecending(pageNo,pageSize,sortBy));
         body.put("body", companyPage.getContent());
         body.put("currentPage", companyPage.getNumber());
         body.put("totalItems", companyPage.getTotalElements());

@@ -33,7 +33,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Page<Department> getAllDepartmnet2(Integer pageNo, Integer pageSize, String sortBy) {
+    public Page<Department> getAllDepartmnetByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Department> pagedResult = departmentReponsitory.findAll(paging);
         return  pagedResult;

@@ -27,7 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Page<Project> getAllProject2(Integer pageNo, Integer pageSize, String sortBy) {
+    public Page<Project> getAllProjectByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Project> pagedResult = projectReponsitory.findAll(paging);
         return  pagedResult;

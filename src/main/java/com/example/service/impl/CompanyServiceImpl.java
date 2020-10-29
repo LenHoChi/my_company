@@ -29,8 +29,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Page<Company> getAllCompany2(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    public Page<Company> getAllCompanyByNameDecending(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("name").descending());
         Page<Company> pagedResult = companyRepository.findAll(paging);
         return  pagedResult;
 //        if(pagedResult.hasContent()) {

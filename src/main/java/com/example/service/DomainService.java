@@ -11,7 +11,7 @@ import java.util.Map;
 public interface DomainService {
     Domain saveDomain(Domain domain);
     List<Domain> getAllDomain();
-    Page<Domain> getAllDomain2(Integer pageNo, Integer pageSize, String sortBy);
+    Page<Domain> getAllDomainByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
     Domain getDomainById(String id);
     Domain updateDomain(String id, Domain domain);
     Map<String, Boolean> deleteDomain(String id);

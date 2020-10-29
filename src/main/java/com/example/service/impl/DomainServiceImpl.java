@@ -32,7 +32,7 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
-    public Page<Domain> getAllDomain2(Integer pageNo, Integer pageSize, String sortBy) {
+    public Page<Domain> getAllDomainByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Domain> pagedResult = domainReponsitory.findAll(paging);
         return  pagedResult;
