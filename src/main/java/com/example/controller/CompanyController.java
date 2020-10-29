@@ -6,10 +6,13 @@ import com.example.model.Company;
 import com.example.service.CompanyService;
 import com.example.utils.CompanyConvert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +26,33 @@ public class CompanyController {
     public List<CompanyDTO> getAllCompany(){
         return companyConvert.listModelToListDTO(companyService.getAllCompany());
     }
+    @GetMapping("/len/company")
+    public Page<CompanyDTO> getAllCompany2(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy){
+        return companyConvert.pageModelToPageDTO(companyService.getAllCompany2(pageNo,pageSize,sortBy));
+    }
+    @GetMapping("/len2/company")
+    public ResponseEntity<Map<String, Object>> getAllCompany3(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy){
+        Map<String, Object> body = new HashMap<>();
+        Page<CompanyDTO> companyPage= companyConvert.pageModelToPageDTO(companyService.getAllCompany2(pageNo,pageSize,sortBy));
+        body.put("body", companyPage.getContent());
+        body.put("currentPage", companyPage.getNumber());
+        body.put("totalItems", companyPage.getTotalElements());
+        body.put("totalPages", companyPage.getTotalPages());
+        return new ResponseEntity<>(body, HttpStatus.OK);
+    }
     @GetMapping("/company/{id}")
     public CompanyDTO getCompanyById(@PathVariable(value = "id") String id) throws ResourceNotFoundException {
         return companyConvert.modelToDTO(companyService.getCompanyById(id));
     }
     @PostMapping("/company")
-    public CompanyDTO createCompany(@Valid @RequestBody Company company){
-        return  companyConvert.modelToDTO(companyService.saveCompany(company));
+    public CompanyDTO createCompany(@Valid @RequestBody CompanyDTO company){
+        return  companyConvert.modelToDTO(companyService.saveCompany(companyConvert.dtoToModel(company)));
     }
     @PutMapping("/company/{id}")
     public CompanyDTO updateCompany(@PathVariable(value = "id") String id, @Valid @RequestBody Company company) throws  ResourceNotFoundException{

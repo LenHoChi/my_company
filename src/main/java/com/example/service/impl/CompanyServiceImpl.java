@@ -5,10 +5,12 @@ import com.example.model.Company;
 import com.example.repository.CompanyRepository;
 import com.example.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.lang.module.ResolutionException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,18 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getAllCompany() {
         return (List<Company>) companyRepository.findAll();
+    }
+
+    @Override
+    public Page<Company> getAllCompany2(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Company> pagedResult = companyRepository.findAll(paging);
+        return  pagedResult;
+//        if(pagedResult.hasContent()) {
+//            return pagedResult.getContent();
+//        } else {
+//            return new ArrayList<Company>();
+//        }
     }
 
     @Override

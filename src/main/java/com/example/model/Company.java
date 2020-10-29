@@ -9,13 +9,15 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "company", schema = "public")
 @Data
+@AllArgsConstructor
+
+@NoArgsConstructor
 //@EqualsAndHashCode(exclude="domain")
 public class Company {
     @Id

@@ -3,15 +3,19 @@ package com.example.utils;
 import com.example.dto.CompanyDTO;
 import com.example.model.Company;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyConvert {
     ModelMapper modelMapper =new ModelMapper();
-        public Company dtoToModel(CompanyDTO companyDTO){
+    public Company dtoToModel(CompanyDTO companyDTO){
         Company company=new Company();
         company.setName(companyDTO.getName());
         company.setId(companyDTO.getId());
+        company.setPhone(companyDTO.getPhone());
+        company.setUrl(companyDTO.getUrl());
         return company;
     }
     public CompanyDTO modelToDTO(Company company){
@@ -25,5 +29,8 @@ public class CompanyConvert {
             companyDTOs.add(companyDTO);
         }
         return companyDTOs;
+    }
+    public Page<CompanyDTO> pageModelToPageDTO(Page<Company> pageModel){
+        return pageModel.map(this::modelToDTO);
     }
 }

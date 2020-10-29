@@ -1,10 +1,15 @@
 package com.example.service.impl;
 
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Employee;
 import com.example.repository.EmployeeReponsitory;
 import com.example.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getAllEmployee() {
         return employeeReponsitory.findAll();
+    }
+
+    @Override
+    public Page<Employee> getAllEmployee2(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Employee> pagedResult = employeeReponsitory.findAll(paging);
+        return  pagedResult;
     }
 
     @Override

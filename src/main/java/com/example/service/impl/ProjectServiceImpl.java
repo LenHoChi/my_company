@@ -1,10 +1,15 @@
 package com.example.service.impl;
 
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Project;
 import com.example.repository.ProjectReponsitory;
 import com.example.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +24,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> getAllProject() {
         return projectReponsitory.findAll();
+    }
+
+    @Override
+    public Page<Project> getAllProject2(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Project> pagedResult = projectReponsitory.findAll(paging);
+        return  pagedResult;
     }
 
     @Override

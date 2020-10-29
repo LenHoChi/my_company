@@ -1,10 +1,15 @@
 package com.example.service.impl;
 
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Domain;
 import com.example.repository.DomainReponsitory;
 import com.example.service.DomainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,13 @@ public class DomainServiceImpl implements DomainService {
     @Override
     public List<Domain> getAllDomain() {
         return domainReponsitory.findAll();
+    }
+
+    @Override
+    public Page<Domain> getAllDomain2(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Domain> pagedResult = domainReponsitory.findAll(paging);
+        return  pagedResult;
     }
 
     @Override

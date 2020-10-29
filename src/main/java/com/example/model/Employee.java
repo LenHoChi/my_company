@@ -7,12 +7,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
 @Entity
 @Data
+@AllArgsConstructor
+
+@NoArgsConstructor
 @Table(name = "employee")
 //@EqualsAndHashCode(exclude="department")
 public class Employee  {

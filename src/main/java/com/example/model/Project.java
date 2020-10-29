@@ -7,11 +7,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Data
+@AllArgsConstructor
+
+@NoArgsConstructor
 @Table(name = "project")
 public class Project  {
     @Id

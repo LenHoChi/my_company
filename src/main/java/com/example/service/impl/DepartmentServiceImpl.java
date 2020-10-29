@@ -1,11 +1,16 @@
 package com.example.service.impl;
 
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Department;
 import com.example.repository.DepartmentReponsitory;
 import com.example.service.CompanyService;
 import com.example.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +30,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<Department> getAllDepartment() {
         return departmentReponsitory.findAll();
+    }
+
+    @Override
+    public Page<Department> getAllDepartmnet2(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<Department> pagedResult = departmentReponsitory.findAll(paging);
+        return  pagedResult;
     }
 
     @Override
