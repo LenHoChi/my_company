@@ -1,29 +1,31 @@
 package com.example.service.impl;
 
+import com.example.dto.DomainDTO;
 import com.example.exception.ResourceNotFoundException;
-import com.example.model.Company;
 import com.example.model.Domain;
 import com.example.repository.DomainReponsitory;
 import com.example.service.DomainService;
+import com.example.utils.convert.DomainConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class DomainServiceImpl implements DomainService {
     @Autowired
     private DomainReponsitory domainReponsitory;
+    private DomainConvert domainConvert;
     @Override
-    public Domain saveDomain(Domain domain) {
-        return domainReponsitory.save(domain);
+    public DomainDTO saveDomain(Domain domain) {
+        return domainConvert.modelToDTO(domainReponsitory.save(domain));
     }
 
     @Override
@@ -39,21 +41,21 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
-    public Domain getDomainById(String id) {
+    public Optional<Domain> getDomainById(String id) {
         Domain domain = domainReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any domain"));
         //return ResponseEntity.ok().body(domain);
-        return domain;
+        return Optional.ofNullable(domain);
     }
 
     @Override
-    public Domain updateDomain(String id, Domain domain) {
+    public DomainDTO updateDomain(String id, Domain domain) {
         Domain domain1 = domainReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any domain"));
         domain1.setName(domain.getName());
         final Domain updateDomain = domainReponsitory.save(domain1);
         //return ResponseEntity.ok().body(updateDomain);
-        return updateDomain;
+        return domainConvert.modelToDTO(updateDomain);
     }
 
     @Override

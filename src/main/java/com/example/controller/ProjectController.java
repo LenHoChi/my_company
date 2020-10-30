@@ -1,17 +1,15 @@
 package com.example.controller;
 
-import com.example.dto.EmployeeDTO;
 import com.example.dto.ProjectDTO;
 import com.example.model.Project;
 import com.example.service.ProjectService;
-import com.example.utils.ProjectConvert;
+import com.example.utils.convert.ProjectConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.parser.Entity;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +20,13 @@ import java.util.Map;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-    ProjectConvert projectConvert=new ProjectConvert();
     @GetMapping("/project/{id}")
     public ProjectDTO getProjectById(@PathVariable(name = "id") String id){
-        return projectConvert.modelToDTO(projectService.getProjectById(id));
+        return ProjectConvert.modelToDTO(projectService.getProjectById(id).get());
     }
     @GetMapping("/project")
     public List<ProjectDTO> getAllProject(){
-        return projectConvert.listModelToListDTO(projectService.getAllProject());
+        return ProjectConvert.listModelToListDTO(projectService.getAllProject());
     }
     @GetMapping("/len2/project")
     public ResponseEntity<Map<String, Object>> getAllProjectByIdAscending(
@@ -37,7 +34,7 @@ public class ProjectController {
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
         Map<String, Object> body = new HashMap<>();
-        Page<ProjectDTO> projectPage= projectConvert.pageModelToPageDTO(projectService.getAllProjectByIdAscending(pageNo,pageSize,sortBy));
+        Page<ProjectDTO> projectPage= ProjectConvert.pageModelToPageDTO(projectService.getAllProjectByIdAscending(pageNo,pageSize,sortBy));
         body.put("body", projectPage.getContent());
         body.put("currentPage", projectPage.getNumber());
         body.put("totalItems", projectPage.getTotalElements());
@@ -46,11 +43,11 @@ public class ProjectController {
     }
     @PostMapping("/project")
     public ProjectDTO createProject(@Valid @RequestBody ProjectDTO project){
-        return projectConvert.modelToDTO(projectService.saveProject(projectConvert.dtoToModel(project)));
+        return projectService.saveProject(ProjectConvert.dtoToModel(project));
     }
     @PutMapping("/project/{id}")
     public ProjectDTO updateProject(@PathVariable(name = "id") String id, @Valid @RequestBody Project project){
-        return projectConvert.modelToDTO(projectService.upateProject(id,project));
+        return projectService.upateProject(id,project);
     }
     @DeleteMapping("/project/{id}")
     public Map<String, Boolean> deleteProject(@PathVariable(name = "id") String id){

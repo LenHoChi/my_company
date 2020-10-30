@@ -9,6 +9,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,12 +20,12 @@ import java.util.Set;
 
 @NoArgsConstructor
 //@EqualsAndHashCode(exclude="domain")
-public class Company {
+public class Company  {
     @Id
     @Column(name = "company_id")
     private String id;
     @Column(name = "company_name")
-    private String name;
+    private  String name;
     @Column(name = "url")
     private String url;
     @Column(name = "phone")

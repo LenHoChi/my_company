@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dto.DomainDTO;
 import com.example.model.Company;
 import com.example.model.Domain;
 import org.springframework.data.domain.Page;
@@ -7,12 +8,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface DomainService {
-    Domain saveDomain(Domain domain);
+    DomainDTO saveDomain(Domain domain);
     List<Domain> getAllDomain();
     Page<Domain> getAllDomainByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
-    Domain getDomainById(String id);
-    Domain updateDomain(String id, Domain domain);
+    Optional<Domain> getDomainById(String id);
+    DomainDTO updateDomain(String id, Domain domain);
     Map<String, Boolean> deleteDomain(String id);
 }

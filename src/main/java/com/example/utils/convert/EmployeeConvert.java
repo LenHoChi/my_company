@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.example.utils.convert;
 
 import com.example.dto.CompanyDTO;
 import com.example.dto.DepartmentDTO;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeConvert {
-    ModelMapper modelMapper =new ModelMapper();
-    public Employee dtoToModel(EmployeeDTO employeeDTO){
+    static ModelMapper modelMapper =new ModelMapper();
+    public static Employee dtoToModel(EmployeeDTO employeeDTO){
         Employee employee=new Employee();
         employee.setName(employeeDTO.getName());
         employee.setId(employeeDTO.getId());
@@ -23,11 +23,11 @@ public class EmployeeConvert {
         employee.setPhone(employeeDTO.getPhone());
         return employee;
     }
-    public EmployeeDTO modelToDTO(Employee employee){
+    public static EmployeeDTO modelToDTO(Employee employee){
         EmployeeDTO employeeDTO=modelMapper.map(employee,EmployeeDTO.class);
         return employeeDTO;
     }
-    public List<EmployeeDTO> listModelToListDTO(List<Employee> employees){
+    public static List<EmployeeDTO> listModelToListDTO(List<Employee> employees){
         List<EmployeeDTO> employeeDTOS=new ArrayList<>();
         for(int i=0;i<employees.size();i++){
             EmployeeDTO employeeDTO=modelMapper.map(employees.get(i), EmployeeDTO.class);
@@ -35,7 +35,7 @@ public class EmployeeConvert {
         }
         return employeeDTOS;
     }
-    public Page<EmployeeDTO> pageModelToPageDTO(Page<Employee> pageModel){
-        return pageModel.map(this::modelToDTO);
+    public static Page<EmployeeDTO> pageModelToPageDTO(Page<Employee> pageModel){
+        return pageModel.map(EmployeeConvert::modelToDTO);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.example.utils.convert;
 
 import com.example.dto.CompanyDTO;
 import com.example.dto.DepartmentDTO;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectConvert {
-    ModelMapper modelMapper =new ModelMapper();
-    public Project dtoToModel(ProjectDTO projectDTO){
+    static ModelMapper modelMapper =new ModelMapper();
+    public static Project dtoToModel(ProjectDTO projectDTO){
         Project project=new Project();
         project.setName(projectDTO.getName());
         project.setId(projectDTO.getId());
@@ -22,11 +22,11 @@ public class ProjectConvert {
         project.setDescription(projectDTO.getDescription());
         return project;
     }
-    public ProjectDTO modelToDTO(Project project){
+    public static ProjectDTO modelToDTO(Project project){
         ProjectDTO projectDTO=modelMapper.map(project,ProjectDTO.class);
         return projectDTO;
     }
-    public List<ProjectDTO> listModelToListDTO(List<Project> projects){
+    public static List<ProjectDTO> listModelToListDTO(List<Project> projects){
         List<ProjectDTO> projectDTOS=new ArrayList<>();
         for(int i=0;i<projects.size();i++){
             ProjectDTO projectDTO=modelMapper.map(projects.get(i),ProjectDTO.class);
@@ -34,7 +34,7 @@ public class ProjectConvert {
         }
         return projectDTOS;
     }
-    public Page<ProjectDTO> pageModelToPageDTO(Page<Project> pageModel){
-        return pageModel.map(this::modelToDTO);
+    public static Page<ProjectDTO> pageModelToPageDTO(Page<Project> pageModel){
+        return pageModel.map(ProjectConvert::modelToDTO);
     }
 }

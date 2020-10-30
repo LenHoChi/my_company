@@ -1,29 +1,31 @@
 package com.example.service.impl;
 
+import com.example.dto.EmployeeDTO;
 import com.example.exception.ResourceNotFoundException;
-import com.example.model.Company;
 import com.example.model.Employee;
 import com.example.repository.EmployeeReponsitory;
 import com.example.service.EmployeeService;
+import com.example.utils.convert.EmployeeConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeReponsitory employeeReponsitory;
+    private EmployeeConvert employeeConvert;
     @Override
-    public Employee saveEmployee(Employee employee) {
-        return employeeReponsitory.save(employee);
+    public EmployeeDTO saveEmployee(Employee employee) {
+        return employeeConvert.modelToDTO(employeeReponsitory.save(employee));
     }
 
     @Override
@@ -39,21 +41,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(String id) {
+    public Optional<Employee> getEmployeeById(String id) {
         Employee employee = employeeReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any employee"));
         //return ResponseEntity.ok().body(employee);
-        return employee;
+        return Optional.ofNullable(employee);
     }
 
     @Override
-    public Employee updateEmployee(String id, Employee employee) {
+    public EmployeeDTO updateEmployee(String id, Employee employee) {
         Employee employee1 = employeeReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any employee"));
         employee1.setName(employee.getName());
         final Employee updateEmployee = employeeReponsitory.save(employee1);
         //return ResponseEntity.ok().body(updateEmployee);
-        return updateEmployee;
+        return employeeConvert.modelToDTO(updateEmployee);
     }
 
     @Override

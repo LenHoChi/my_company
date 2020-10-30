@@ -1,11 +1,9 @@
 package com.example.controller;
 
-import com.example.dto.CompanyDTO;
 import com.example.dto.DepartmentDTO;
 import com.example.model.Department;
 import com.example.service.DepartmentService;
-import com.example.utils.CompanyConvert;
-import com.example.utils.DepartmentConvert;
+import com.example.utils.convert.DepartmentConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,14 +20,13 @@ import java.util.Map;
 public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
-    DepartmentConvert departmentConvert =new DepartmentConvert();
     @GetMapping("/department")
     public List<DepartmentDTO> getAllDepartment(){
-        return departmentConvert.listModelToListDTO(departmentService.getAllDepartment());
+        return DepartmentConvert.listModelToListDTO(departmentService.getAllDepartment());
     }
     @GetMapping("/department/{id}")
     public DepartmentDTO getDepartmentById(@PathVariable(value = "id") String id){
-        return departmentConvert.modelToDTO(departmentService.getDepartmentById(id));
+        return DepartmentConvert.modelToDTO(departmentService.getDepartmentById(id).get());
     }
     @GetMapping("/len2/department")
     public ResponseEntity<Map<String, Object>> getAllDepartmentByIdAscending(
@@ -37,7 +34,7 @@ public class DepartmentController {
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
         Map<String, Object> body = new HashMap<>();
-        Page<DepartmentDTO> departmentPage= departmentConvert.pageModelToPageDTO(departmentService.getAllDepartmnetByIdAscending(pageNo,pageSize,sortBy));
+        Page<DepartmentDTO> departmentPage= DepartmentConvert.pageModelToPageDTO(departmentService.getAllDepartmnetByIdAscending(pageNo,pageSize,sortBy));
         body.put("body", departmentPage.getContent());
         body.put("currentPage", departmentPage.getNumber());
         body.put("totalItems", departmentPage.getTotalElements());
@@ -46,11 +43,11 @@ public class DepartmentController {
     }
     @PostMapping("/department")
     public DepartmentDTO createDepartment(@Valid @RequestBody DepartmentDTO department){
-        return departmentConvert.modelToDTO(departmentService.saveDepartment(departmentConvert.dtoToModel(department)));
+        return departmentService.saveDepartment(DepartmentConvert.dtoToModel(department));
     }
     @PutMapping("/department/{id}")
     public DepartmentDTO updateDepartment(@PathVariable(value = "id") String id, @Valid @RequestBody Department department){
-        return departmentConvert.modelToDTO(departmentService.updateDepartment(id,department));
+        return departmentService.updateDepartment(id,department);
     }
     @DeleteMapping("/department/{id}")
     public Map<String, Boolean> deleteDepartment(@PathVariable(value = "id") String id){

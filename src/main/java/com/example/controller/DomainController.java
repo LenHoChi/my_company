@@ -1,10 +1,9 @@
 package com.example.controller;
 
-import com.example.dto.CompanyDTO;
 import com.example.dto.DomainDTO;
 import com.example.model.Domain;
 import com.example.service.DomainService;
-import com.example.utils.DomainConvert;
+import com.example.utils.convert.DomainConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,14 +20,13 @@ import java.util.Map;
 public class DomainController {
     @Autowired
     private DomainService domainService;
-    DomainConvert domainConvert=new DomainConvert();
     @GetMapping("/domain")
     public List<DomainDTO> getAllDomain(){
-        return domainConvert.listModelToListDTO(domainService.getAllDomain());
+        return DomainConvert.listModelToListDTO(domainService.getAllDomain());
     }
     @GetMapping("/domain/{id}")
     public DomainDTO getDomainById(@PathVariable(name = "id") String id){
-        return domainConvert.modelToDTO(domainService.getDomainById(id));
+        return DomainConvert.modelToDTO(domainService.getDomainById(id).get());
     }
     @GetMapping("/len2/domain")
     public ResponseEntity<Map<String, Object>> getAllDomainByIdAscending(
@@ -36,7 +34,7 @@ public class DomainController {
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy){
         Map<String, Object> body = new HashMap<>();
-        Page<DomainDTO> domainPage= domainConvert.pageModelToPageDTO(domainService.getAllDomainByIdAscending(pageNo,pageSize,sortBy));
+        Page<DomainDTO> domainPage= DomainConvert.pageModelToPageDTO(domainService.getAllDomainByIdAscending(pageNo,pageSize,sortBy));
         body.put("body", domainPage.getContent());
         body.put("currentPage", domainPage.getNumber());
         body.put("totalItems", domainPage.getTotalElements());
@@ -45,11 +43,11 @@ public class DomainController {
     }
     @PostMapping("/domain")
     public DomainDTO createDomain(@Valid @RequestBody DomainDTO domain){
-        return domainConvert.modelToDTO(domainService.saveDomain(domainConvert.dtoToModel(domain)));
+        return domainService.saveDomain(DomainConvert.dtoToModel(domain));
     }
     @PutMapping("/domain/{id}")
     public DomainDTO updateDomain(@PathVariable(name = "id") String id, @Valid @RequestBody Domain domain){
-        return domainConvert.modelToDTO(domainService.updateDomain(id,domain));
+        return domainService.updateDomain(id,domain);
     }
     @DeleteMapping("/domain/{id}")
     public Map<String, Boolean> deleteDomain(@PathVariable(name = "id") String id){
