@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface EmployeeService {
     EmployeeDTO saveEmployee(Employee employee);
-    List<Employee> getAllEmployee();
-    Page<Employee> getAllEmployeeByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
-    Optional<Employee> getEmployeeById(String id);
+    List<EmployeeDTO> getAllEmployee();
+    Page<EmployeeDTO> getAllEmployeeBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort);
+    Optional<EmployeeDTO> getEmployeeById(String id);
     EmployeeDTO updateEmployee(String id, Employee employee);
     Map<String, Boolean> deleteEmployee(String id);
 }

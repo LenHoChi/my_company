@@ -12,12 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
@@ -29,21 +30,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getAllCompany() {
-        return (List<Company>) companyRepository.findAll();
+    public List<CompanyDTO> getAllCompany() {
+        return companyConvert.listModelToListDTO(companyRepository.findAll());
     }
-
     @Override
-    public Page<Company> getAllCompanyByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<Company> pagedResult = companyRepository.findAll(paging);
-        return  pagedResult;
-    }
-
-    @Override
-    public Page<Company> getAllCompanyByNameDecending(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-        Page<Company> pagedResult = companyRepository.findAll(paging);
+    public Page<CompanyDTO> getAllCompanyBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort) {
+        Pageable paging;
+        if(typeSort.equals("asc"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        Page<CompanyDTO> pagedResult = companyConvert.pageModelToPageDTO(companyRepository.findAll(paging));
         return  pagedResult;
 //        if(pagedResult.hasContent()) {
 //            return pagedResult.getContent();
@@ -53,10 +50,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Optional<Company> getCompanyById(String id) {
+    public Optional<CompanyDTO> getCompanyById(String id) {
         Company company= companyRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Not found any company"));
         //return ResponseEntity.ok().body(company);
-        return Optional.ofNullable(company);
+        return Optional.ofNullable(companyConvert.modelToDTO(company));
     }
 
     @Override

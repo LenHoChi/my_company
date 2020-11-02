@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.example.dto.ProjectDTO;
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Project;
 import com.example.repository.ProjectReponsitory;
 import com.example.service.ProjectService;
@@ -12,26 +13,31 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectReponsitory projectReponsitory;
     private ProjectConvert projectConvert;
     @Override
-    public List<Project> getAllProject() {
-        return projectReponsitory.findAll();
+    public List<ProjectDTO> getAllProject() {
+        return projectConvert.listModelToListDTO(projectReponsitory.findAll());
     }
 
     @Override
-    public Page<Project> getAllProjectByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<Project> pagedResult = projectReponsitory.findAll(paging);
+    public Page<ProjectDTO> getAllProjectBySort(Integer pageNo, Integer pageSize, String sortBy,String typeSort) {
+        Pageable paging;
+        if(typeSort.equals("asc"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        Page<ProjectDTO> pagedResult = projectConvert.pageModelToPageDTO(projectReponsitory.findAll(paging));
         return  pagedResult;
     }
 
@@ -51,11 +57,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Optional<Project> getProjectById(String id) {
+    public Optional<ProjectDTO> getProjectById(String id) {
         Project project = projectReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any project"));
         //return ResponseEntity.ok().body(project);
-        return Optional.ofNullable(project);
+        return Optional.ofNullable(projectConvert.modelToDTO(project));
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.example.dto.EmployeeDTO;
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Employee;
 import com.example.repository.EmployeeReponsitory;
 import com.example.service.EmployeeService;
@@ -12,12 +13,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
@@ -29,23 +31,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAllEmployee() {
-        return employeeReponsitory.findAll();
+    public List<EmployeeDTO> getAllEmployee() {
+        return employeeConvert.listModelToListDTO(employeeReponsitory.findAll());
     }
 
     @Override
-    public Page<Employee> getAllEmployeeByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<Employee> pagedResult = employeeReponsitory.findAll(paging);
+    public Page<EmployeeDTO> getAllEmployeeBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort) {
+        Pageable paging;
+        if(typeSort.equals("asc"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        Page<EmployeeDTO> pagedResult = employeeConvert.pageModelToPageDTO(employeeReponsitory.findAll(paging));
         return  pagedResult;
     }
 
     @Override
-    public Optional<Employee> getEmployeeById(String id) {
+    public Optional<EmployeeDTO> getEmployeeById(String id) {
         Employee employee = employeeReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any employee"));
         //return ResponseEntity.ok().body(employee);
-        return Optional.ofNullable(employee);
+        return Optional.ofNullable(employeeConvert.modelToDTO(employee));
     }
 
     @Override

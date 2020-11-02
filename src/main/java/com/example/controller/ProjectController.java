@@ -22,19 +22,20 @@ public class ProjectController {
     private ProjectService projectService;
     @GetMapping("/project/{id}")
     public ProjectDTO getProjectById(@PathVariable(name = "id") String id){
-        return ProjectConvert.modelToDTO(projectService.getProjectById(id).get());
+        return projectService.getProjectById(id).get();
     }
     @GetMapping("/project")
     public List<ProjectDTO> getAllProject(){
-        return ProjectConvert.listModelToListDTO(projectService.getAllProject());
+        return projectService.getAllProject();
     }
     @GetMapping("/len2/project")
     public ResponseEntity<Map<String, Object>> getAllProjectByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String typeSort){
         Map<String, Object> body = new HashMap<>();
-        Page<ProjectDTO> projectPage= ProjectConvert.pageModelToPageDTO(projectService.getAllProjectByIdAscending(pageNo,pageSize,sortBy));
+        Page<ProjectDTO> projectPage= projectService.getAllProjectBySort(pageNo,pageSize,sortBy,typeSort);
         body.put("body", projectPage.getContent());
         body.put("currentPage", projectPage.getNumber());
         body.put("totalItems", projectPage.getTotalElements());

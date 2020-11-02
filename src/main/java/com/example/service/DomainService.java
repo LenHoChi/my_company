@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface DomainService {
     DomainDTO saveDomain(Domain domain);
-    List<Domain> getAllDomain();
-    Page<Domain> getAllDomainByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
-    Optional<Domain> getDomainById(String id);
+    List<DomainDTO> getAllDomain();
+    Page<DomainDTO> getAllDomainBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort);
+    Optional<DomainDTO> getDomainById(String id);
     DomainDTO updateDomain(String id, Domain domain);
     Map<String, Boolean> deleteDomain(String id);
 }

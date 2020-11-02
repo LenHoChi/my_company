@@ -22,19 +22,20 @@ public class DepartmentController {
     private DepartmentService departmentService;
     @GetMapping("/department")
     public List<DepartmentDTO> getAllDepartment(){
-        return DepartmentConvert.listModelToListDTO(departmentService.getAllDepartment());
+        return departmentService.getAllDepartment();
     }
     @GetMapping("/department/{id}")
     public DepartmentDTO getDepartmentById(@PathVariable(value = "id") String id){
-        return DepartmentConvert.modelToDTO(departmentService.getDepartmentById(id).get());
+        return departmentService.getDepartmentById(id).get();
     }
     @GetMapping("/len2/department")
     public ResponseEntity<Map<String, Object>> getAllDepartmentByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String typeSort){
         Map<String, Object> body = new HashMap<>();
-        Page<DepartmentDTO> departmentPage= DepartmentConvert.pageModelToPageDTO(departmentService.getAllDepartmnetByIdAscending(pageNo,pageSize,sortBy));
+        Page<DepartmentDTO> departmentPage=departmentService.getAllDepartmnetBySort(pageNo,pageSize,sortBy,typeSort);
         body.put("body", departmentPage.getContent());
         body.put("currentPage", departmentPage.getNumber());
         body.put("totalItems", departmentPage.getTotalElements());

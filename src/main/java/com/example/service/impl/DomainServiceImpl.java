@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.example.dto.DomainDTO;
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Domain;
 import com.example.repository.DomainReponsitory;
 import com.example.service.DomainService;
@@ -12,12 +13,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class DomainServiceImpl implements DomainService {
     @Autowired
@@ -29,23 +31,27 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
-    public List<Domain> getAllDomain() {
-        return domainReponsitory.findAll();
+    public List<DomainDTO> getAllDomain() {
+        return domainConvert.listModelToListDTO(domainReponsitory.findAll());
     }
 
     @Override
-    public Page<Domain> getAllDomainByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<Domain> pagedResult = domainReponsitory.findAll(paging);
+    public Page<DomainDTO> getAllDomainBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort) {
+        Pageable paging;
+        if(typeSort.equals("asc"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        Page<DomainDTO> pagedResult = domainConvert.pageModelToPageDTO(domainReponsitory.findAll(paging));
         return  pagedResult;
     }
 
     @Override
-    public Optional<Domain> getDomainById(String id) {
+    public Optional<DomainDTO> getDomainById(String id) {
         Domain domain = domainReponsitory.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found any domain"));
         //return ResponseEntity.ok().body(domain);
-        return Optional.ofNullable(domain);
+        return Optional.ofNullable(domainConvert.modelToDTO(domain));
     }
 
     @Override

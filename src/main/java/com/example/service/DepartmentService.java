@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface DepartmentService {
     DepartmentDTO saveDepartment(Department department);
-    List<Department> getAllDepartment();
-    Page<Department> getAllDepartmnetByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
-    Optional<Department> getDepartmentById(String id);
+    List<DepartmentDTO> getAllDepartment();
+    Page<DepartmentDTO> getAllDepartmnetBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort);
+    Optional<DepartmentDTO> getDepartmentById(String id);
     DepartmentDTO updateDepartment(String id, Department department);
     Map<String, Boolean> deleteDepartment(String id);
 }

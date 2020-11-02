@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface ProjectService {
-    List<Project> getAllProject();
-    Page<Project> getAllProjectByIdAscending(Integer pageNo, Integer pageSize, String sortBy);
+    List<ProjectDTO> getAllProject();
+    Page<ProjectDTO> getAllProjectBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort);
     ProjectDTO saveProject(Project project);
     ProjectDTO upateProject(String id, Project project);
-    Optional<Project> getProjectById(String id);
+    Optional<ProjectDTO> getProjectById(String id);
     Map<String, Boolean> deleteProject(String id);
 }

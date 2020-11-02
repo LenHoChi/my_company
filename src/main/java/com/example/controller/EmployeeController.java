@@ -22,19 +22,20 @@ public class EmployeeController {
     private EmployeeService employeeService;
     @GetMapping("/employee/{id}")
     public EmployeeDTO getEmployeeById(@PathVariable(name = "id") String id){
-        return EmployeeConvert.modelToDTO(employeeService.getEmployeeById(id).get());
+        return employeeService.getEmployeeById(id).get();
     }
     @GetMapping("/employee")
     public List<EmployeeDTO> getAllEmployee(){
-        return EmployeeConvert.listModelToListDTO(employeeService.getAllEmployee());
+        return employeeService.getAllEmployee();
     }
     @GetMapping("/len2/employee")
     public ResponseEntity<Map<String, Object>> getAllEmployeeByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String typeSort){
         Map<String, Object> body = new HashMap<>();
-        Page<EmployeeDTO> employeePage= EmployeeConvert.pageModelToPageDTO(employeeService.getAllEmployeeByIdAscending(pageNo,pageSize,sortBy));
+        Page<EmployeeDTO> employeePage= employeeService.getAllEmployeeBySort(pageNo,pageSize,sortBy,typeSort);
         body.put("body", employeePage.getContent());
         body.put("currentPage", employeePage.getNumber());
         body.put("totalItems", employeePage.getTotalElements());

@@ -22,19 +22,20 @@ public class DomainController {
     private DomainService domainService;
     @GetMapping("/domain")
     public List<DomainDTO> getAllDomain(){
-        return DomainConvert.listModelToListDTO(domainService.getAllDomain());
+        return domainService.getAllDomain();
     }
     @GetMapping("/domain/{id}")
     public DomainDTO getDomainById(@PathVariable(name = "id") String id){
-        return DomainConvert.modelToDTO(domainService.getDomainById(id).get());
+        return domainService.getDomainById(id).get();
     }
     @GetMapping("/len2/domain")
     public ResponseEntity<Map<String, Object>> getAllDomainByIdAscending(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String typeSort){
         Map<String, Object> body = new HashMap<>();
-        Page<DomainDTO> domainPage= DomainConvert.pageModelToPageDTO(domainService.getAllDomainByIdAscending(pageNo,pageSize,sortBy));
+        Page<DomainDTO> domainPage= domainService.getAllDomainBySort(pageNo,pageSize,sortBy,typeSort);
         body.put("body", domainPage.getContent());
         body.put("currentPage", domainPage.getNumber());
         body.put("totalItems", domainPage.getTotalElements());

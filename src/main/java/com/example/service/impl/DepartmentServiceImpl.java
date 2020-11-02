@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.example.dto.DepartmentDTO;
 import com.example.exception.ResourceNotFoundException;
+import com.example.model.Company;
 import com.example.model.Department;
 import com.example.repository.DepartmentReponsitory;
 import com.example.service.DepartmentService;
@@ -12,12 +13,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
@@ -29,22 +31,26 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<Department> getAllDepartment() {
-        return departmentReponsitory.findAll();
+    public List<DepartmentDTO> getAllDepartment() {
+        return departmentConvert.listModelToListDTO(departmentReponsitory.findAll());
     }
 
     @Override
-    public Page<Department> getAllDepartmnetByIdAscending(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<Department> pagedResult = departmentReponsitory.findAll(paging);
+    public Page<DepartmentDTO> getAllDepartmnetBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort) {
+        Pageable paging;
+        if(typeSort.equals("asc"))
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        else
+            paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        Page<DepartmentDTO> pagedResult = departmentConvert.pageModelToPageDTO(departmentReponsitory.findAll(paging));
         return  pagedResult;
     }
 
     @Override
-    public Optional<Department> getDepartmentById(String id) {
+    public Optional<DepartmentDTO> getDepartmentById(String id) {
         Department department = departmentReponsitory.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not found any department"));
         //return ResponseEntity.ok().body(department);
-        return Optional.ofNullable(department);
+        return Optional.ofNullable(departmentConvert.modelToDTO(department));
     }
 
     @Override
