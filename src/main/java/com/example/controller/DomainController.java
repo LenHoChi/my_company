@@ -24,6 +24,10 @@ public class DomainController {
     public List<DomainDTO> getAllDomain(){
         return domainService.getAllDomain();
     }
+    @GetMapping("/len/domain")
+    public List<Domain> getAllDomain2(){
+        return domainService.getAllDomain2();
+    }
     @GetMapping("/domain/{id}")
     public DomainDTO getDomainById(@PathVariable(name = "id") String id){
         return domainService.getDomainById(id).get();

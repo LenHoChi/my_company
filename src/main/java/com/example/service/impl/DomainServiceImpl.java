@@ -36,6 +36,11 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
+    public List<Domain> getAllDomain2() {
+        return domainReponsitory.findAll();
+    }
+
+    @Override
     public Page<DomainDTO> getAllDomainBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort) {
         Pageable paging;
         if(typeSort.equals("asc"))

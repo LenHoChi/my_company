@@ -28,7 +28,7 @@ public class DomainConvert {
     public static List<DomainDTO> listModelToListDTO(List<Domain> domains){
         List<DomainDTO> domainDTOS=new ArrayList<>();
         for(int i=0;i<domains.size();i++){
-            DomainDTO domainDTO=modelMapper.map(domainDTOS.get(i),DomainDTO.class);
+            DomainDTO domainDTO=modelMapper.map(domains.get(i),DomainDTO.class);
             domainDTOS.add(domainDTO);
         }
         return domainDTOS;

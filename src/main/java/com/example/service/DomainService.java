@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface DomainService {
     DomainDTO saveDomain(Domain domain);
     List<DomainDTO> getAllDomain();
+    List<Domain> getAllDomain2();
     Page<DomainDTO> getAllDomainBySort(Integer pageNo, Integer pageSize, String sortBy, String typeSort);
     Optional<DomainDTO> getDomainById(String id);
     DomainDTO updateDomain(String id, Domain domain);
