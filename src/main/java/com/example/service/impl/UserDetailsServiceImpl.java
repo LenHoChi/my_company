@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.example.exception.UsernameNotFoundException;
 import com.example.model.Users;
 import com.example.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -25,13 +25,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Users> user = usersRepository.findById(username);
 
-		if (user == null) {
+		if (user == null||user.isEmpty()) {
 			throw new UsernameNotFoundException("Invalid username or password");
 		}
 
 		return new User(username, user.get().getPassword(), true, true, true,
 				true, AuthorityUtils.createAuthorityList(user.get().getRole()));
-
 	}
 
 
