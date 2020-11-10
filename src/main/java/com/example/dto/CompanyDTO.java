@@ -2,7 +2,9 @@ package com.example.dto;
 
 import com.example.model.Department;
 import lombok.Data;
+import com.example.dto.DepartmentDTO;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
