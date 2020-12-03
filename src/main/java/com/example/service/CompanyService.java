@@ -15,4 +15,6 @@ public interface CompanyService {
     Optional<CompanyDTO> getCompanyById(String id);
     CompanyDTO updateCompany(String id, Company company);
     Map<String, Boolean> deleteCompany(String id);
+
+    CompanyDTO  testTransactional() throws Exception;
 }

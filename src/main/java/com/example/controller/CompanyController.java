@@ -68,4 +68,9 @@ public class CompanyController {
     public Map<String, Boolean> deleteCompany(@PathVariable(value = "id") String id) throws  ResourceNotFoundException{
         return  companyService.deleteCompany(id);
     }
+    @GetMapping("/len")
+    public ResponseEntity<?> testTransactional() throws Exception {
+        companyService.testTransactional();
+        return ResponseEntity.ok(true);
+    }
 }

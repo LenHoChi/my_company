@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static String REALM_NAME ="RESTFUL_REALM";
 
-	@Qualifier("userDetailsServiceImpl")
+	//@Qualifier("userDetailsServiceImpl")
 	@Autowired
 	private UserDetailsService userDetailsService;
 

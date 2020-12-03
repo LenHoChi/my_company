@@ -14,12 +14,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Column;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 @Transactional(rollbackFor = Exception.class)
 @Service
+//@Transactional
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
@@ -72,5 +74,14 @@ public class CompanyServiceImpl implements CompanyService {
         Map<String, Boolean> response = new HashMap<>();
         response.put("delete company ok", Boolean.TRUE);
         return response;
+    }
+
+    @Override
+    public CompanyDTO testTransactional() throws Exception {
+        String id="3";
+        Company company1 = companyRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Not Found any company"));
+        company1.setName("hochilen3");
+//        final Company updateComany = companyRepository.save(company1);
+        return companyConvert.modelToDTO(company1);
     }
 }
